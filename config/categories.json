@@ -1,0 +1,28 @@
+{
+  "categories": [
+    {
+      "id": "96a0893dd105",
+      "name": "hfh",
+      "subcategories": [],
+      "files": [
+        {
+          "id": "0670fa1db826",
+          "name": "fh.ahk",
+          "path": "ahk_scripts\\0670fa1db826_fh.ahk"
+        }
+      ]
+    },
+    {
+      "id": "c0ad7b5a2929",
+      "name": "hfh",
+      "subcategories": [],
+      "files": [
+        {
+          "id": "ee0e8bbfa4b4",
+          "name": "hf.ahk",
+          "path": "ahk_scripts\\ee0e8bbfa4b4_hf.ahk"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "shortcuts": {
+    "run": "Ctrl+R",
+    "stop": "Ctrl+T",
+    "restart": "Ctrl+Shift+R",
+    "save": "Ctrl+S",
+    "edit_focus": "Ctrl+E",
+    "new_category": "Ctrl+Shift+N",
+    "new_file": "Ctrl+N",
+    "import_file": "Ctrl+I",
+    "delete_selected": "Del",
+    "toggle_left_panel": "Ctrl+B",
+    "toggle_toolbar": "Ctrl+Shift+T",
+    "open_settings": "Ctrl+,",
+    "quit": "Ctrl+Q"
+  },
+  "toolbar_visible": true,
+  "left_panel_visible": true,
+  "left_panel_width": 207,
+  "window_geometry": "01d9d0cb000300000000026a00000086000006e7000003740000026a000000a5000006e700000374000000000000000007800000026a000000a5000006e700000374"
+}

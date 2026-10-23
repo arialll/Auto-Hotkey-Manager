@@ -322,6 +322,9 @@ QTreeWidget::branch:open:has-children:has-siblings {{
     self._shortcuts["delete_selected"] = bind(
         sc.get("delete_selected"), self.left_panel._delete_selected
     )
+    self._shortcuts["rename_selected"] = bind(
+        sc.get("rename_selected"), self.left_panel._rename_selected
+    )
     self._shortcuts["toggle_left_panel"] = bind(
         sc.get("toggle_left_panel"), self._toggle_left_panel
     )
@@ -366,6 +369,7 @@ QTreeWidget::branch:open:has-children:has-siblings {{
 
   def closeEvent(self, event):
     try:
+      self.settings = sm.load_settings()
       self.settings["left_panel_visible"] = self._left_visible
       if self._left_visible:
         self.settings["left_panel_width"] = self.splitter.sizes()[0]

@@ -140,6 +140,7 @@ class RightPanel(QWidget):
             return
         content = self.editor.get_content()
         fm.write_file_content(self.current_file_entry, content)
+        show_toast(self.window(), f"Saved: {self.current_file_entry['name']}")
 
     def save_current(self):
         self._on_save()

@@ -122,7 +122,7 @@ def delete_category(category_id: str) -> bool:
 
 
 def rename_category(category_id: str, new_name: str) -> bool:
-    cat = None
+    """Rename a category."""
     data = load_categories()
     cat = find_category(data, category_id)
     if cat is None:
@@ -295,3 +295,12 @@ def _is_descendant(data, ancestor_id, candidate_id) -> bool:
                 return True
         return False
     return walk(anc)
+def rename_file(file_id: str, new_name: str) -> bool:
+    data = load_categories()
+    found = find_file(data, file_id)
+    if found is None:
+        return False
+    cat, entry = found
+    entry["name"] = new_name
+    save_categories(data)
+    return True

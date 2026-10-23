@@ -16,6 +16,7 @@ DEFAULT_SHORTCUTS = {
     "new_file": "Ctrl+N",
     "import_file": "Ctrl+I",
     "delete_selected": "Delete",
+    "rename_selected": "F2",
     "toggle_left_panel": "Ctrl+B",
     "toggle_toolbar": "Ctrl+Shift+T",
     "open_settings": "Ctrl+,",

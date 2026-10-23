@@ -9,6 +9,7 @@
     "new_file": "Ctrl+N",
     "import_file": "Ctrl+I",
     "delete_selected": "Del",
+    "rename_selected": "F2",
     "toggle_left_panel": "Ctrl+B",
     "toggle_toolbar": "Ctrl+Shift+T",
     "open_settings": "Ctrl+,",
@@ -17,5 +18,8 @@
   "toolbar_visible": true,
   "left_panel_visible": true,
   "left_panel_width": 272,
-  "window_geometry": "01d9d0cb00030000000001a7000000af000006240000039d000001a7000000ce000006240000039d00000000000000000780000001a7000000ce000006240000039d"
+  "window_geometry": "01d9d0cb00030000000001a7000000af000006240000039d000001a7000000ce000006240000039d00000000000000000780000001a7000000ce000006240000039d",
+  "expanded_categories": [
+    "c4a5574b2fe7"
+  ]
 }

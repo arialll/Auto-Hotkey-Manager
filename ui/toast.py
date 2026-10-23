@@ -53,13 +53,12 @@ class Toast(QWidget):
         QTimer.singleShot(duration, self._start_fade_out)
 
     def _position(self, parent):
-        if parent is None:
-            return
-        self.adjustSize()
-        pr = parent.rect()
-        bottom_right = parent.mapToGlobal(pr.bottomRight())
+        from PySide6.QtGui import QCursor
         from PySide6.QtCore import QPoint
-        self.move(bottom_right - QPoint(self.width() + 24, self.height() + 24))
+        self.adjustSize()
+        pos = QCursor.pos()
+        # place toast near (below-right) mouse cursor
+        self.move(pos + QPoint(12, 12))
 
     def _start_fade_out(self):
         self._fade_out.start()

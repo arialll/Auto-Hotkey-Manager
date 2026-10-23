@@ -44,6 +44,8 @@ class LeftPanel(QWidget):
         self.tree.customContextMenuRequested.connect(self._context_menu)
         self.tree.itemClicked.connect(self._on_item_clicked)
         self.tree.itemDoubleClicked.connect(self._on_item_double_clicked)
+        self.tree.itemExpanded.connect(self._on_expand_toggle)
+        self.tree.itemCollapsed.connect(self._on_expand_toggle)
         self.tree.setStyleSheet(f"""
     /* Mengatur lebar area branch agar tidak terlalu renggang */
     QTreeView::branch {{
@@ -152,11 +154,74 @@ class LeftPanel(QWidget):
 
     # ---------- data refresh ----------
     def refresh(self):
+        expanded = self._expanded_ids()
+        if not expanded:
+            expanded = self._load_state()
+        if not expanded:
+            # default: expand all
+            data = fm.load_categories()
+            expanded = self._all_category_ids(data)
         self.tree.clear()
         data = fm.load_categories()
         for cat in data.get("categories", []):
             self._add_category_node(None, cat)
+        self._restore_expanded(expanded)
+        self._save_state(expanded)
         self._apply_filter(self.search_box.text())
+
+    def _all_category_ids(self, data):
+        ids = set()
+        def walk(cat):
+            ids.add(cat["id"])
+            for sub in cat.get("subcategories", []):
+                walk(sub)
+        for c in data.get("categories", []):
+            walk(c)
+        return ids
+
+    def _state_path(self):
+        return None
+
+    def _load_state(self):
+        try:
+            from core import settings_manager as sm
+            s = sm.load_settings()
+            return set(s.get("expanded_categories", []))
+        except Exception:
+            return set()
+
+    def _save_state(self, ids):
+        try:
+            from core import settings_manager as sm
+            s = sm.load_settings()
+            s["expanded_categories"] = list(ids)
+            sm.save_settings(s)
+        except Exception:
+            pass
+
+    def _on_expand_toggle(self, item):
+        self._save_state(self._expanded_ids())
+
+    def _expanded_ids(self):
+        ids = set()
+        def walk(item):
+            data = item.data(0, Qt.UserRole)
+            if data and data[0] == "category":
+                if item.isExpanded():
+                    ids.add(data[1])
+            for i in range(item.childCount()):
+                walk(item.child(i))
+        walk(self.tree.invisibleRootItem())
+        return ids
+
+    def _restore_expanded(self, ids):
+        def walk(item):
+            data = item.data(0, Qt.UserRole)
+            if data and data[0] == "category" and data[1] in ids:
+                item.setExpanded(True)
+            for i in range(item.childCount()):
+                walk(item.child(i))
+        walk(self.tree.invisibleRootItem())
 
     def _add_category_node(self, parent_item, cat):
         item = QTreeWidgetItem()
@@ -176,7 +241,7 @@ class LeftPanel(QWidget):
             fitem.setIcon(0, _icon("file.svg"))
             fitem.setData(0, Qt.UserRole, ("file", cat["id"], f["id"]))
             item.addChild(fitem)
-        item.setExpanded(True)
+        item.setExpanded(False)
 
     # ---------- filter ----------
     def _apply_filter(self, text):
@@ -301,7 +366,40 @@ class LeftPanel(QWidget):
             except Exception as e:
                 QMessageBox.warning(self, "Error", str(e))
 
+    def _rename_selected(self):
+        selected = self.get_selected()
+        if not selected:
+            return
+        if selected[0] == "category":
+            cat_id = selected[1]
+            name, ok = QInputDialog.getText(self, "Rename Kategori", "Nama baru:")
+            if ok and name.strip():
+                fm.rename_category(cat_id, name.strip())
+                self.refresh()
+        elif selected[0] == "file":
+            _, cat_id, file_id = selected
+            name, ok = QInputDialog.getText(self, "Rename File", "Nama file (tanpa .ahk):")
+            if ok and name.strip():
+                fm.rename_file(file_id, name.strip())
+                self.refresh()
     def _delete_selected(self):
+        selected = self.get_selected()
+        if not selected:
+            return
+        if selected[0] == "category":
+            cat_id = selected[1]
+            reply = QMessageBox.question(self, "Hapus", "Hapus kategori ini dan semua isinya?",
+                                         QMessageBox.Yes | QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                fm.delete_category(cat_id)
+                self.refresh()
+        elif selected[0] == "file":
+            _, cat_id, file_id = selected
+            reply = QMessageBox.question(self, "Hapus", "Hapus file ini?",
+                                         QMessageBox.Yes | QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                fm.delete_file(cat_id, file_id)
+                self.refresh()
         selected = self.get_selected()
         if not selected:
             return
@@ -332,6 +430,9 @@ class LeftPanel(QWidget):
         import_act = QAction(_icon("import.svg"), "Import .ahk", self)
         import_act.triggered.connect(self._import_file)
         menu.addAction(import_act)
+        rename_act = QAction(_icon("rename.svg"), "Rename", self)
+        rename_act.triggered.connect(self._rename_selected)
+        menu.addAction(rename_act)
         menu.addSeparator()
         del_act = QAction(_icon("delete.svg"), "Hapus", self)
         del_act.triggered.connect(self._delete_selected)

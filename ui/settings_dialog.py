@@ -21,6 +21,7 @@ SHORTCUT_LABELS = {
     "new_file": "New File",
     "import_file": "Import .ahk",
     "delete_selected": "Delete Selected",
+    "rename_selected": "Rename Selected",
     "toggle_left_panel": "Toggle Left Panel",
     "toggle_toolbar": "Toggle Toolbar",
     "open_settings": "Open Settings",

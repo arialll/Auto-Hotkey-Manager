@@ -49,24 +49,73 @@ QToolBar QToolButton:hover {
     border-color: #45475a;
 }
 
-/* Tree widget */
-QTreeWidget {
+/* Tree widget & Tables */
+QTreeWidget, QTableWidget {
     background-color: #181825;
     border: 1px solid #313244;
     border-radius: 6px;
     padding: 4px;
     outline: 0;
+    gridline-color: #313244;
 }
-QTreeWidget::item {
+QTreeWidget::item, QTableWidget::item {
     padding: 4px 6px;
     border-radius: 4px;
 }
-QTreeWidget::item:hover {
+QTreeWidget::item:hover, QTableWidget::item:hover {
     background-color: #313244;
 }
-QTreeWidget::item:selected {
+QTreeWidget::item:selected, QTableWidget::item:selected {
     background-color: #45475a;
     color: #cdd6f4;
+}
+
+/* Table Header & Corner Button */
+QHeaderView::section {
+    background-color: #1e1e2e;
+    color: #89b4fa;
+    font-weight: bold;
+    padding: 6px;
+    border: 1px solid #313244;
+    border-radius: 0px;
+}
+QTableCornerButton::section {
+    background-color: #1e1e2e;
+    border: 1px solid #313244;
+}
+
+/* CheckBox */
+QCheckBox {
+    color: #cdd6f4;
+    spacing: 8px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #45475a;
+    border-radius: 4px;
+    background-color: #181825;
+}
+QCheckBox::indicator:hover {
+    border-color: #89b4fa;
+}
+QCheckBox::indicator:checked {
+    background-color: #89b4fa;
+    border-color: #89b4fa;
+    image: url("assets/icons/check.svg"); /* opsional jika ada ikon centang */
+}
+
+/* Key Sequence Edit (Input Shortcut) */
+QKeySequenceEdit {
+    background-color: #181825;
+    color: #cdd6f4;
+    border: 1px solid #313244;
+    border-radius: 4px;
+    padding: 4px;
+}
+QKeySequenceEdit:focus {
+    border-color: #89b4fa;
+    background-color: #1e1e2e;
 }
 
 /* Buttons */

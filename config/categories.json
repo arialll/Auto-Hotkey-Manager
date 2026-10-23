@@ -11,6 +11,18 @@
           "path": "ahk_scripts\\36fc9027d1ce_Turbo Click.ahk"
         }
       ]
+    },
+    {
+      "id": "c4a5574b2fe7",
+      "name": "test",
+      "subcategories": [],
+      "files": [
+        {
+          "id": "b94514826779",
+          "name": "as.ahk",
+          "path": "ahk_scripts\\b94514826779_as.ahk"
+        }
+      ]
     }
   ]
 }

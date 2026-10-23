@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (
     QPushButton, QInputDialog, QMessageBox, QMenu, QFileDialog,
     QAbstractItemView, QLineEdit, QLabel,
 )
-from PySide6.QtCore import Qt, Signal, QSortFilterProxyModel
+from PySide6.QtCore import Qt, Signal, QSortFilterProxyModel, QSize
 from PySide6.QtGui import QAction, QIcon, QStandardItemModel
 
 from core import file_manager as fm
@@ -37,23 +37,36 @@ class LeftPanel(QWidget):
 
         self.tree = QTreeWidget()
         self.tree.setHeaderHidden(True)
-        self.tree.setIndentation(14)
+        self.tree.setIndentation(16)
         self.tree.setAnimated(True)
+        self.tree.setIconSize(QSize(20, 20))
         self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
         self.tree.customContextMenuRequested.connect(self._context_menu)
         self.tree.itemClicked.connect(self._on_item_clicked)
         self.tree.itemDoubleClicked.connect(self._on_item_double_clicked)
-        self.tree.setIndentation(7)
-        self.tree.setStyleSheet("""
-    QTreeView::branch:has-children:!has-siblings:closed,
-    QTreeView::branch:closed:has-children:has-siblings {
-        image: url("assets/icons/chevron_right.svg");
-    }
+        self.tree.setStyleSheet(f"""
+    /* Mengatur lebar area branch agar tidak terlalu renggang */
+    QTreeView::branch {{
+        background: transparent;
+    }}
 
-    QTreeView::branch:open:has-children:!has-siblings,
-    QTreeView::branch:open:has-children:has-siblings {
-        image: url("assets/icons/chevron_down.svg");
-    }
+    QTreeView::branch:has-children:closed {{
+        image: url("{chevron_right}");
+        width: 12px;
+        height: 12px;
+    }}
+
+    QTreeView::branch:has-children:open {{
+        image: url("{chevron_down}");
+        width: 12px;
+        height: 12px;
+    }}
+
+    /* Merapatkan jarak item teks/folder ke ikon branch */
+    QTreeWidget::item {{
+        padding-left: 0px;
+        margin-left: -1px; /* Tarik item ke kiri mendekati chevron */
+    }}
 """)
 
         # Drag & drop

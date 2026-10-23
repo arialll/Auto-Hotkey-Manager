@@ -14,6 +14,8 @@ from core import file_manager as fm
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ICONS_DIR = os.path.join(BASE_DIR, "assets", "icons")
 
+chevron_right = os.path.join(ICONS_DIR, "chevron_right.svg").replace("\\", "/")
+chevron_down = os.path.join(ICONS_DIR, "chevron_down.svg").replace("\\", "/")
 
 def _icon(name):
     p = os.path.join(ICONS_DIR, name)
@@ -41,6 +43,18 @@ class LeftPanel(QWidget):
         self.tree.customContextMenuRequested.connect(self._context_menu)
         self.tree.itemClicked.connect(self._on_item_clicked)
         self.tree.itemDoubleClicked.connect(self._on_item_double_clicked)
+        self.tree.setIndentation(7)
+        self.tree.setStyleSheet("""
+    QTreeView::branch:has-children:!has-siblings:closed,
+    QTreeView::branch:closed:has-children:has-siblings {
+        image: url("assets/icons/chevron_right.svg");
+    }
+
+    QTreeView::branch:open:has-children:!has-siblings,
+    QTreeView::branch:open:has-children:has-siblings {
+        image: url("assets/icons/chevron_down.svg");
+    }
+""")
 
         # Drag & drop
         self.tree.setDragEnabled(True)
